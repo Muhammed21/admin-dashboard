@@ -2,12 +2,12 @@ import { IoEyeOutline } from "react-icons/io5";
 
 interface Props {
   type?: "text" | "password" | "email" | "number";
-  children: React.ReactNode;
+  value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export const Input = ({ type = "text", children, onChange }: Props) => {
-  const placeholder = String(children);
+export const Input = ({ type = "text", value, onChange }: Props) => {
+  const placeholder = String(value);
   return (
     <div className="max-w-72 w-full">
       {type === "text" || "email" ? (

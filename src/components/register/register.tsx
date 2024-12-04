@@ -32,21 +32,18 @@ export const Register = ({ className }: Props) => {
       <Input
         type="text"
         onChange={(e) => setForm({ ...form, name: e.target.value })}
-      >
-        Name
-      </Input>
+        value="Name"
+      ></Input>
       <Input
         type="email"
         onChange={(e) => setForm({ ...form, email: e.target.value })}
-      >
-        Email
-      </Input>
+        value="Email"
+      ></Input>
       <Input
         type="password"
         onChange={(e) => setForm({ ...form, password: e.target.value })}
-      >
-        Password
-      </Input>
+        value="Password"
+      ></Input>
       <Button size="base" type="submit">
         Add Admin
       </Button>

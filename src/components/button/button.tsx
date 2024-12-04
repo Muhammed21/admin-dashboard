@@ -5,17 +5,11 @@ interface Props {
   size: "small" | "base" | "large";
   isDisable?: false;
   type: "submit" | "reset" | "button";
-  className?: String;
+  className?: string;
   children: React.ReactNode;
 }
 
-export const Button = ({
-  size = "base",
-  isDisable,
-  children,
-  type,
-  className,
-}: Props) => {
+export const Button = ({ isDisable, children, type, className }: Props) => {
   return (
     <button
       type={type}

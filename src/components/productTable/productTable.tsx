@@ -1,14 +1,18 @@
-import { PrismaClient } from "@prisma/client";
 import { useState, useEffect } from "react";
 import { Input } from "../input/input";
 import { Typographie } from "../typographie/typographie";
-import { TbAlertSquareRounded } from "react-icons/tb";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 
-const prisma = new PrismaClient();
-
 interface Items {
+  id: number;
+  createdAt: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface APIItems {
   id: number;
   createdAt: string;
   name: string;
@@ -19,7 +23,7 @@ interface Items {
 export const ProductTable = () => {
   const [items, setItems] = useState<Items[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm] = useState("");
   const [editingItem, setEditingItem] = useState<Items | null>(null);
   const [editedValues, setEditedValues] = useState({
     name: "",
@@ -31,13 +35,13 @@ export const ProductTable = () => {
     const fetchItems = async () => {
       try {
         const response = await fetch("/api/product/product");
-        const data = await response.json();
+        const data: APIItems[] = await response.json();
 
-        const formattedData = data.map((item: any) => ({
+        const formattedData: Items[] = data.map((item) => ({
           id: item.id,
           createdAt: new Date(item.createdAt).toLocaleDateString(),
           name: item.name,
-          price: item.price.toFixed(2),
+          price: item.price,
           quantity: item.quantity,
         }));
         setItems(formattedData);
@@ -159,7 +163,7 @@ export const ProductTable = () => {
                     <td className="border-b border-white/5 p-2 pl-5 text-[#A1A1AA] text-h2">
                       <Input
                         type="text"
-                        children={editedValues.name}
+                        value={editedValues.name}
                         onChange={(e) =>
                           setEditedValues({
                             ...editedValues,
@@ -171,7 +175,7 @@ export const ProductTable = () => {
                     <td className="border-b border-white/5 p-2 pl-5 text-[#A1A1AA] text-h2">
                       <Input
                         type="number"
-                        children={editedValues.quantity}
+                        value={editedValues.quantity}
                         onChange={(e) =>
                           setEditedValues({
                             ...editedValues,
@@ -183,7 +187,7 @@ export const ProductTable = () => {
                     <td className="border-b border-white/5 p-2 pl-5 text-[#A1A1AA] text-h2">
                       <Input
                         type="number"
-                        children={editedValues.price}
+                        value={editedValues.price}
                         onChange={(e) =>
                           setEditedValues({
                             ...editedValues,

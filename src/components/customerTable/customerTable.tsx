@@ -4,7 +4,7 @@ import { Input } from "../input/input";
 import { TbAlertSquareRounded } from "react-icons/tb";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-interface Order {
+interface Customer {
   id: number;
   date: string;
   customer: string;
@@ -13,8 +13,17 @@ interface Order {
   total: string;
 }
 
+interface APIcustomer {
+  id: number;
+  createdAt: string;
+  customerName: string;
+  payment: string;
+  fulfillment: string;
+  total: string;
+}
+
 export const CustomerTable = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -22,17 +31,17 @@ export const CustomerTable = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetch("/api/order");
-        const data = await response.json();
+        const data: APIcustomer[] = await response.json();
 
-        const formattedData = data.map((order: any) => ({
-          id: order.id,
-          date: new Date(order.createdAt).toLocaleDateString(),
-          customer: order.customerName,
-          payment: order.payment,
-          fulfillment: order.fulfillment,
-          total: `€ ${order.total.toFixed(2)} EUR`,
+        const formattedData: Customer[] = data.map((customer) => ({
+          id: customer.id,
+          date: new Date(customer.createdAt).toLocaleDateString(),
+          customer: customer.customerName,
+          payment: customer.payment,
+          fulfillment: customer.fulfillment,
+          total: `€ ${customer.total} EUR`,
         }));
-        setOrders(formattedData);
+        setCustomers(formattedData);
       } catch (error) {
         console.error("Erreur lors de la récupération des commandes :", error);
       } finally {
@@ -43,8 +52,8 @@ export const CustomerTable = () => {
     fetchOrders();
   }, []);
 
-  const filteredOrders = orders.filter((order) =>
-    order.customer.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOrders = customers.filter((customer) =>
+    customer.customer.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (isLoading)
@@ -63,7 +72,7 @@ export const CustomerTable = () => {
       </div>
     );
 
-  if (orders.length === 0)
+  if (customers.length === 0)
     return (
       <div className="w-full h-full grid place-content-center">
         <div className="flex flex-col items-center justify-center gap-2.5">
@@ -86,7 +95,7 @@ export const CustomerTable = () => {
           <div className="pl-5">
             <Input
               type="text"
-              children="Search"
+              value="Search"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>

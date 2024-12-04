@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import { Typographie } from "../typographie/typographie";
-import { Input } from "../input/input";
 import { TbAlertSquareRounded } from "react-icons/tb";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import Image from "next/image";
-import { PrismaClient } from "@prisma/client";
 import { Register } from "../register/register";
 import { IoAddOutline, IoRemoveOutline } from "react-icons/io5";
-
-const prisma = new PrismaClient();
 
 interface Order {
   id: number;
@@ -17,19 +13,27 @@ interface Order {
   name: string;
 }
 
+interface ApiOrder {
+  id: number;
+  createdAt: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
 export const AdminTable = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm] = useState("");
   const [isRegisterVisible, setIsRegisterVisible] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const response = await fetch("/api/user/user");
-        const data = await response.json();
+        const data: ApiOrder[] = await response.json();
 
-        const formattedData = data.map((order: any) => ({
+        const formattedData: Order[] = data.map((order) => ({
           id: order.id,
           date: new Date(order.createdAt).toLocaleDateString(),
           name: order.name,

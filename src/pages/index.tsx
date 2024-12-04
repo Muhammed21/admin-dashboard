@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Input } from "@/pages/design/input/input";
-import { Button } from "@/pages/design/button/button";
-import { Avatar } from "./design/avatar/avatar";
-import { Typographie } from "@/pages/design/typographie/typographie";
+import { Input } from "@/components/input/input";
+import { Button } from "@/components/button/button";
+import { Avatar } from "../components/avatar/avatar";
+import { Typographie } from "@/components/typographie/typographie";
 
 export default function Login() {
   const router = useRouter();
@@ -36,7 +36,9 @@ export default function Login() {
         setError(data.message || "An error occurred");
       }
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      if (err instanceof Error) {
+        setError(err.message);
+      }
     }
   };
 
@@ -59,15 +61,13 @@ export default function Login() {
           <Input
             type="text"
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-          >
-            Email
-          </Input>
+            value="Email"
+          ></Input>
           <Input
             type="password"
             onChange={(e) => setForm({ ...form, password: e.target.value })}
-          >
-            Password
-          </Input>
+            value="Password"
+          ></Input>
           <Button type="submit" size="base" className="w-full">
             Continue with Email
           </Button>

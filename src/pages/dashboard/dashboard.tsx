@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Container } from "../design/container/container";
-import { Navigation } from "../design/navigation/navigation";
-import { TopBar } from "../design/topbar/topBar";
-import { CustomerTable } from "../design/customerTable/customerTable";
+import { Container } from "../../components/container/container";
+import { Navigation } from "../../components/navigation/navigation";
+import { TopBar } from "../../components/topbar/topBar";
+import { CustomerTable } from "../../components/customerTable/customerTable";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Typographie } from "../design/typographie/typographie";
-import { Register } from "../design/register/register";
-import { AdminTable } from "../design/adminTable/adminTable";
-import { ProductTable } from "../design/productTable/productTable";
+import { Typographie } from "../../components/typographie/typographie";
+import { AdminTable } from "../../components/adminTable/adminTable";
+import { ProductTable } from "../../components/productTable/productTable";
 
 type User = {
   id: number;

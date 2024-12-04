@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Avatar = ({ variant, size = 36 }: Props) => {
-  let sizeStyle: String = "";
+  let sizeStyle: string = "";
   switch (size) {
     case 30:
       sizeStyle = "w-[30px] h-[30px]";

@@ -37,6 +37,9 @@ export default async function handler(
 
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(401).json({ message: "Invalid or expired token" });
+    if (error instanceof Error) {
+      return res.status(401).json({ error: error.message });
+    }
+    return res.status(401).json({ error: "An unknown error occurred" });
   }
 }

@@ -1,4 +1,3 @@
-import localFont from "next/dist/compiled/@next/font/dist/local";
 import { clsx } from "clsx";
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
   theme?: "white" | "muted-gray" | "gray";
   fontFamily?: "inter";
   weight?: "regular" | "medium" | "semibold";
-  className?: String;
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -19,9 +18,9 @@ export const Typographie = ({
   className,
   children,
 }: Props) => {
-  let sizeStyle: String = "";
-  let themeStyle: String = "";
-  let weightStyle: String = "";
+  let sizeStyle: string = "";
+  let themeStyle: string = "";
+  let weightStyle: string = "";
 
   switch (size) {
     case "h1":
