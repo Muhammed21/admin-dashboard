@@ -8,16 +8,16 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #18181b;
+  --foreground: #ededed;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #18181b;
     --foreground: #ededed;
   }
-}
+} */
 
 .input::placeholder,
 .pass::placeholder {

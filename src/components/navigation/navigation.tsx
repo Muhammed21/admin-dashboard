@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { Avatar } from "../avatar/avatar";
 import { MenuLink } from "../menu-link/menuLink";
 import { Typographie } from "../typographie/typographie";
-import { TbLogout2 } from "react-icons/tb";
+import { MdLogout } from "react-icons/md";
 
 interface Props {
   userName: React.ReactNode;
@@ -16,6 +16,10 @@ export const Navigation = ({
   setActiveIndex,
 }: Props) => {
   const router = useRouter();
+  let primaryLetter = "";
+  if (typeof userName === "string" && userName.length > 0) {
+    primaryLetter = userName.charAt(0);
+  }
   const logout = () => {
     localStorage.clear();
     router.push("/");
@@ -23,7 +27,7 @@ export const Navigation = ({
   return (
     <div className="flex flex-col justify-between gap-3 p-3 bg-[#18181B] border-r border-white/5 w-max h-screen">
       <div className="flex gap-2.5 items-center justify-start w-full">
-        <Avatar variant="square" size={30}></Avatar>
+        <Avatar variant="square" size={36} placeholder="C"></Avatar>
         <Typographie size="h2" balise="h2" theme="white" weight="medium">
           Cheap Store
         </Typographie>
@@ -76,13 +80,17 @@ export const Navigation = ({
 
       <div className="flex items-center justify-between w-full pt-4 border-t border-white/5 border-dashed">
         <div className="flex justify-start gap-2.5 items-center">
-          <Avatar variant="cercle" size={30}></Avatar>
+          <Avatar
+            variant="cercle"
+            size={36}
+            placeholder={primaryLetter}
+          ></Avatar>
           <Typographie size="h2" balise="h2" theme="white" weight="medium">
             {userName}
           </Typographie>
         </div>
         <button onClick={logout}>
-          <TbLogout2 size={20} color="gray" />
+          <MdLogout className="rotate-180" size={20} color="gray" />
         </button>
       </div>
     </div>

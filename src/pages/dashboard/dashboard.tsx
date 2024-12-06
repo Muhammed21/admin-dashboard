@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import { Container } from "../../components/container/container";
 import { Navigation } from "../../components/navigation/navigation";
 import { TopBar } from "../../components/topbar/topBar";
-import { CustomerTable } from "../../components/customerTable/customerTable";
+import { OrderTable } from "@/components/orderTable/orderTable";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Typographie } from "../../components/typographie/typographie";
-import { AdminTable } from "../../components/adminTable/adminTable";
 import { ProductTable } from "../../components/productTable/productTable";
+import { CustomerTable } from "@/components/customerTable/customerTable";
+import { AdminTable } from "@/components/adminTable/adminTable";
 
 type User = {
   id: number;
@@ -62,7 +63,7 @@ export default function DashboardPage() {
         return (
           <div className="flex flex-col w-full ">
             <TopBar>Commandes</TopBar>
-            <CustomerTable></CustomerTable>
+            <OrderTable></OrderTable>
           </div>
         );
       case 1:
@@ -73,7 +74,12 @@ export default function DashboardPage() {
           </div>
         );
       case 2:
-        return <TopBar>Clients</TopBar>;
+        return (
+          <div className="flex flex-col w-full">
+            <TopBar>Clients</TopBar>
+            <CustomerTable></CustomerTable>
+          </div>
+        );
       case 3:
         return <TopBar>Promotions</TopBar>;
       case 4:

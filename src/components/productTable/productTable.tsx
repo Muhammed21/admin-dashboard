@@ -196,7 +196,7 @@ export const ProductTable = () => {
                         }
                       ></Input>
                     </td>
-                    <div className="flex justify-end gap-4 border-b border-white/5 pr-8 p-4 pl-5 text-[#A1A1AA] text-h2 text-right">
+                    <td className="flex justify-end gap-4 border-b border-white/5 pr-8 p-4 pl-5 text-[#A1A1AA] text-h2 text-right">
                       <button
                         onClick={handleSave}
                         className="bg-white/5 hover:bg-white/10 transition-all ease-in-out delay-75 menuLink rounded-md py-2 px-2 text-h2"
@@ -209,7 +209,7 @@ export const ProductTable = () => {
                       >
                         Cancel
                       </button>
-                    </div>
+                    </td>
                   </>
                 ) : (
                   <>

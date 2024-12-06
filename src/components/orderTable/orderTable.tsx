@@ -22,7 +22,7 @@ interface APIcustomer {
   total: string;
 }
 
-export const CustomerTable = () => {
+export const OrderTable = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

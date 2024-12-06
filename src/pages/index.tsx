@@ -43,7 +43,7 @@ export default function Login() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center text-mutedGray gap-4">
+    <div className="overflow-hidden w-full h-screen flex flex-col items-center justify-center text-mutedGray gap-4">
       <div className="flex flex-col w-max h-max gap-4 items-center justify-center">
         <Avatar variant="square" size={50} />
         <div className="flex flex-col gap-2 items-center">

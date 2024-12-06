@@ -3,9 +3,10 @@ import { clsx } from "clsx";
 interface Props {
   variant: "square" | "cercle";
   size: 30 | 36 | 40 | 50;
+  placeholder?: string;
 }
 
-export const Avatar = ({ variant, size = 36 }: Props) => {
+export const Avatar = ({ variant, size = 36, placeholder }: Props) => {
   let sizeStyle: string = "";
   switch (size) {
     case 30:
@@ -27,17 +28,19 @@ export const Avatar = ({ variant, size = 36 }: Props) => {
         "bg-gray-200",
         sizeStyle,
         variant === "cercle" && "rounded-full",
-        variant === "square" && "rounded-lg",
+        variant === "square" && "rounded-md",
         "border border-white/5 p-[3px]"
       )}
     >
       <div
         className={clsx(
-          "bg-bg-filed w-full h-full",
-          variant === "square" && "rounded-md",
+          "grid place-content-center text-gray uppercase font-medium bg-white/10 w-full h-full",
+          variant === "square" && "rounded-[3px]",
           variant === "cercle" && "rounded-full"
         )}
-      ></div>
+      >
+        {placeholder}
+      </div>
     </div>
   );
 };
