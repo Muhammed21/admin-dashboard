@@ -8,7 +8,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Typographie } from "../../components/typographie/typographie";
 import { CustomerTable } from "@/components/customer/customerTable";
 import { AdminTable } from "@/components/admin/adminTable";
-import {ProductTable} from "@/components/product/productTable";
+import { ProductTable } from "@/components/product/productTable";
+import { PromotionTable } from "@/components/promotion/promotionTable";
 
 type User = {
   id: number;
@@ -81,7 +82,12 @@ export default function DashboardPage() {
           </div>
         );
       case 3:
-        return <TopBar>Promotions</TopBar>;
+        return (
+          <div className="flex flex-col w-full">
+            <TopBar>Promotions</TopBar>
+            <PromotionTable></PromotionTable>
+          </div>
+        );
       case 4:
         return (
           <div className="flex flex-col w-full">
