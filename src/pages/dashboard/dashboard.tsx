@@ -6,9 +6,9 @@ import { TopBar } from "../../components/topbar/topBar";
 import { OrderTable } from "@/components/orderTable/orderTable";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Typographie } from "../../components/typographie/typographie";
-import { ProductTable } from "../../components/productTable/productTable";
-import { CustomerTable } from "@/components/customerTable/customerTable";
-import { AdminTable } from "@/components/adminTable/adminTable";
+import { CustomerTable } from "@/components/customer/customerTable";
+import { AdminTable } from "@/components/admin/adminTable";
+import {ProductTable} from "@/components/product/productTable";
 
 type User = {
   id: number;

@@ -13,7 +13,22 @@ export default async function handler(
     return res.status(400).json({ error: "Invalid ID" });
   }
 
-  if (req.method === "PUT") {
+  if (req.method === "GET") {
+    try {
+      const product = await prisma.item.findUnique({
+        where: { id: parseInt(id) },
+      });
+
+      if (!product) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      res.status(200).json(product);
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      res.status(500).json({ error: "Failed to fetch product" });
+    }
+  } else if (req.method === "PUT") {
     try {
       const { name, price, quantity } = req.body;
 
@@ -23,7 +38,11 @@ export default async function handler(
 
       const updatedProduct = await prisma.item.update({
         where: { id: parseInt(id) },
-        data: { name, price: parseFloat(price), quantity: parseInt(quantity) },
+        data: {
+          name,
+          price: parseFloat(price),
+          quantity: parseInt(quantity),
+        },
       });
 
       res.status(200).json(updatedProduct);

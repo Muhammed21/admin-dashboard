@@ -90,7 +90,7 @@ export const Navigation = ({
           </Typographie>
         </div>
         <button onClick={logout}>
-          <MdLogout className="rotate-180" size={20} color="gray" />
+          <MdLogout className="rotate-180 hover:opacity-70 transition-all ease-in-out duration-200" size={20} color="gray" />
         </button>
       </div>
     </div>
