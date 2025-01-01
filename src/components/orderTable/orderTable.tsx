@@ -3,7 +3,6 @@ import { Typographie } from "../typographie/typographie";
 import { Input } from "../input/input";
 import { TbAlertSquareRounded, TbArrowBackUp } from "react-icons/tb";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { BsArrowReturnRight } from "react-icons/bs";
 import { router } from "next/client";
 import { Avatar } from "@/components/avatar/avatar";
 
