@@ -14,7 +14,12 @@ export default async function handler(
           id: "asc",
         },
         include: {
-          items: true,
+          customer: true,
+          items: {
+            select: {
+              item: true,
+            },
+          },
         },
       });
       res.status(200).json(orders);

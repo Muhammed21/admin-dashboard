@@ -10,6 +10,7 @@ import { CustomerTable } from "@/components/customer/customerTable";
 import { AdminTable } from "@/components/admin/adminTable";
 import { ProductTable } from "@/components/product/productTable";
 import { PromotionTable } from "@/components/promotion/promotionTable";
+import isNotExpired from "@/pages/api/auth/isNotExpired";
 
 type User = {
   id: number;
@@ -41,6 +42,8 @@ export default function DashboardPage() {
         .catch(() => router.push("/"));
     }
   }, [router]);
+
+  isNotExpired()
 
   if (!user)
     return (
