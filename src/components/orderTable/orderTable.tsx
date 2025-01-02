@@ -5,6 +5,7 @@ import { TbAlertSquareRounded, TbArrowBackUp } from "react-icons/tb";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { router } from "next/client";
 import { Avatar } from "@/components/avatar/avatar";
+import { FulfilledBtn } from "../button/fulfilledBtn";
 
 interface Item {
   id: number;
@@ -74,45 +75,45 @@ export const OrderTable = () => {
     setSelectedOrderId(orderID);
   };
 
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch("/api/order/order");
+      const data: APIcustomer[] = await response.json();
+
+      const formattedData: Customer[] = data.map((customer) => ({
+        id: customer.id,
+        date: new Date(customer.createdAt).toLocaleDateString(),
+        customer: customer.customerName,
+        email: customer.email,
+        payment: customer.payment,
+        fulfillment: customer.fulfillment,
+        total: `€ ${customer.total} EUR`,
+        customerDetail: {
+          id: customer.customer.id,
+          email: customer.customer.email,
+          name: customer.customer.name,
+          adress: customer.customer.adress,
+          postal: customer.customer.postal,
+          city: customer.customer.city,
+        },
+        items: customer.items.map((item) => ({
+          id: item.item.id,
+          name: item.item.name,
+          price: item.item.price,
+          quantity: item.item.quantity,
+        })),
+      }));
+
+      setCustomers(formattedData);
+      console.log(formattedData);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des commandes :", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch("/api/order");
-        const data: APIcustomer[] = await response.json();
-
-        const formattedData: Customer[] = data.map((customer) => ({
-          id: customer.id,
-          date: new Date(customer.createdAt).toLocaleDateString(),
-          customer: customer.customerName,
-          email: customer.email,
-          payment: customer.payment,
-          fulfillment: customer.fulfillment,
-          total: `€ ${customer.total} EUR`,
-          customerDetail: {
-            id: customer.customer.id,
-            email: customer.customer.email,
-            name: customer.customer.name,
-            adress: customer.customer.adress,
-            postal: customer.customer.postal,
-            city: customer.customer.city,
-          },
-          items: customer.items.map((item) => ({
-            id: item.item.id,
-            name: item.item.name,
-            price: item.item.price,
-            quantity: item.item.quantity,
-          })),
-        }));
-
-        setCustomers(formattedData);
-        console.log(formattedData);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des commandes :", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchOrders();
   }, []);
 
@@ -343,6 +344,13 @@ export const OrderTable = () => {
                 </Typographie>
               </div>
             </div>
+            {selectedOrder.fulfillment === "Not fulfilled" && (
+              <FulfilledBtn
+                id={selectedOrder.id}
+                onFulfilled={fetchOrders}
+                email={selectedOrder.customerDetail.email}
+              />
+            )}
           </div>
         </div>
       </div>
