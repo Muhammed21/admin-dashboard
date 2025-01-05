@@ -3,6 +3,7 @@ import { Input } from "../input/input";
 import { Typographie } from "../typographie/typographie";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
+import clsx from "clsx";
 
 interface Items {
   id: number;
@@ -29,6 +30,11 @@ export const ProductTable = () => {
     name: "",
     price: "",
     quantity: "",
+  });
+  const [createdValues, setCreatedValues] = useState({
+    name: "",
+    price: 0,
+    quantity: 0,
   });
 
   useEffect(() => {
@@ -95,6 +101,32 @@ export const ProductTable = () => {
     }
   };
 
+  const createProduct = async () => {
+    try {
+      const response = await fetch("/api/product/product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(createdValues),
+      });
+
+      if (response.ok) {
+        const data: APIItems = await response.json();
+        const newItem: Items = {
+          id: data.id,
+          createdAt: new Date(data.createdAt).toLocaleDateString(),
+          name: data.name,
+          price: data.price,
+          quantity: data.quantity,
+        };
+        setItems((prevItems) => [newItem, ...prevItems]);
+      } else {
+        console.error("Erreur lors de la création du produit.");
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
+    }
+  };
+
   const handleCancel = () => {
     setEditingItem(null);
   };
@@ -120,7 +152,67 @@ export const ProductTable = () => {
     );
 
   return (
-    <div className="p-3 w-full">
+    <div className="flex flex-col gap-3 p-3 w-full h-max">
+      <div className="flex flex-col gap-1 w-full h-max bg-bg-filed border border-white/5 rounded-lg py-5">
+        <div className="flex flex-col pb-4 w-full">
+          <Typographie balise="h1" theme="white" className="pl-5 text-[18px]">
+            Add produits
+          </Typographie>
+        </div>
+        <hr className="border-none bg-white/5 h-[1px]" />
+        <div className="flex w-full items-center justify-between text-[#A1A1AA] pl-5 pr-8 pt-4">
+          <div className="flex gap-4">
+            <Input
+              type="text"
+              value="Name"
+              onChange={(e) =>
+                setCreatedValues({
+                  ...createdValues,
+                  name: e.target.value,
+                })
+              }
+            ></Input>
+            <Input
+              type="number"
+              value="Quantity"
+              onChange={(e) =>
+                setCreatedValues({
+                  ...createdValues,
+                  quantity: parseInt(e.target.value),
+                })
+              }
+            ></Input>
+            <Input
+              type="number"
+              value="Price"
+              onChange={(e) =>
+                setCreatedValues({
+                  ...createdValues,
+                  price: parseInt(e.target.value),
+                })
+              }
+            ></Input>
+          </div>
+          <button
+            onClick={createProduct}
+            disabled={
+              createdValues.name === "" ||
+              createdValues.price === 0 ||
+              createdValues.quantity === 0
+            }
+            className={clsx(
+              createdValues.name === "" ||
+                createdValues.price === 0 ||
+                createdValues.quantity === 0
+                ? "cursor-not-allowed"
+                : "cursor-pointer",
+              "bg-white/5 hover:bg-white/10 w-max h-max transition-all ease-in-out delay-75 menuLink rounded-md py-2 px-2 text-h2"
+            )}
+          >
+            Add
+          </button>
+        </div>
+      </div>
       <div className="flex flex-col gap-1 w-full h-max bg-bg-filed border border-white/5 rounded-lg py-5">
         <div className="flex flex-col pb-4 w-full">
           <Typographie balise="h1" theme="white" className="pl-5 text-[18px]">

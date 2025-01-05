@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
+const JWT_SECRET = process.env.JWT_SECRET as string;
 
 type Data = {
   user?: object;
@@ -26,7 +26,9 @@ export default async function handler(
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: number };
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as {
+      userId: number;
+    };
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
     });

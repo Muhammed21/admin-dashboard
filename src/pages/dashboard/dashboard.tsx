@@ -43,7 +43,7 @@ export default function DashboardPage() {
     }
   }, [router]);
 
-  isNotExpired()
+  isNotExpired();
 
   if (!user)
     return (
@@ -98,8 +98,6 @@ export default function DashboardPage() {
             <AdminTable></AdminTable>
           </div>
         );
-      default:
-        return <div>Bienvenue sur le tableau de bord</div>;
     }
   };
 
