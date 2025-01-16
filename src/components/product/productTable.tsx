@@ -11,6 +11,7 @@ interface Items {
   name: string;
   price: number;
   quantity: number;
+  categoryId: number;
 }
 
 interface APIItems {
@@ -19,10 +20,17 @@ interface APIItems {
   name: string;
   price: number;
   quantity: number;
+  categoryId: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
 }
 
 export const ProductTable = () => {
   const [items, setItems] = useState<Items[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm] = useState("");
   const [editingItem, setEditingItem] = useState<Items | null>(null);
@@ -30,11 +38,13 @@ export const ProductTable = () => {
     name: "",
     price: "",
     quantity: "",
+    categoryId: 0,
   });
   const [createdValues, setCreatedValues] = useState({
     name: "",
     price: 0,
     quantity: 0,
+    categoryId: 0,
   });
 
   useEffect(() => {
@@ -49,6 +59,7 @@ export const ProductTable = () => {
           name: item.name,
           price: item.price,
           quantity: item.quantity,
+          categoryId: item.categoryId,
         }));
         setItems(formattedData);
       } catch (error) {
@@ -61,12 +72,28 @@ export const ProductTable = () => {
     fetchItems();
   }, []);
 
+  // Charger les catégories depuis l'API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/product/category");
+        const data: Category[] = await response.json();
+        setCategories(data); // Mettre à jour l'état avec les catégories récupérées
+      } catch (error) {
+        console.error("Erreur lors de la récupération des catégories :", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleEditClick = (item: Items) => {
     setEditingItem(item);
     setEditedValues({
       name: item.name,
       price: item.price.toString(),
       quantity: item.quantity.toString(),
+      categoryId: item.categoryId,
     });
   };
 
@@ -79,6 +106,7 @@ export const ProductTable = () => {
         ...editedValues,
         price: parseFloat(editedValues.price),
         quantity: parseInt(editedValues.quantity),
+        categoryId: editedValues.categoryId,
       };
       const response = await fetch(`/api/product/${editingItem.id}`, {
         method: "PUT",
@@ -117,7 +145,9 @@ export const ProductTable = () => {
           name: data.name,
           price: data.price,
           quantity: data.quantity,
+          categoryId: data.categoryId,
         };
+        console.log(data.categoryId);
         setItems((prevItems) => [newItem, ...prevItems]);
       } else {
         console.error("Erreur lors de la création du produit.");
@@ -129,6 +159,12 @@ export const ProductTable = () => {
 
   const handleCancel = () => {
     setEditingItem(null);
+  };
+
+  // Fonction pour obtenir le nom de la catégorie en fonction de l'id
+  const getCategoryNameById = (categoryId: number) => {
+    const category = categories.find((category) => category.id === categoryId);
+    return category ? category.name : "Inconnue";
   };
 
   const filteredItem = items.filter((item) =>
@@ -182,6 +218,28 @@ export const ProductTable = () => {
                 })
               }
             ></Input>
+            <select
+              value={createdValues.categoryId}
+              onChange={(e) =>
+                setCreatedValues({
+                  ...createdValues,
+                  categoryId: parseInt(e.target.value),
+                })
+              }
+              className="input border-[1.5px] border-white/5 bg-bg-filed text-white px-4 py-[7px] rounded-md text-h2"
+            >
+              {categories.length !== 0 ? (
+                <>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </>
+              ) : (
+                <div>Sélectionnez</div>
+              )}
+            </select>
             <Input
               type="number"
               value="Price"
@@ -236,6 +294,9 @@ export const ProductTable = () => {
                 Quantity
               </td>
               <td className="border-b border-white/5 p-4 pl-5 py-3 text-[#dfdfeb] text-h2 text-left">
+                Category
+              </td>
+              <td className="border-b border-white/5 p-4 pl-5 py-3 text-[#dfdfeb] text-h2 text-left">
                 Price TTC
               </td>
               <td className="border-b border-white/5 pr-8 p-4 pl-5 py-3 text-[#dfdfeb] text-h2 text-right"></td>
@@ -277,6 +338,30 @@ export const ProductTable = () => {
                       ></Input>
                     </td>
                     <td className="border-b border-white/5 p-2 pl-5 text-[#A1A1AA] text-h2">
+                      <select
+                        value={editedValues.categoryId}
+                        onChange={(e) =>
+                          setEditedValues({
+                            ...editedValues,
+                            categoryId: parseInt(e.target.value),
+                          })
+                        }
+                        className="input  border-[1.5px] border-white/5 bg-bg-filed text-white px-4 py-2 rounded-md"
+                      >
+                        {categories.length !== 0 ? (
+                          <>
+                            {categories.map((category) => (
+                              <option key={category.id} value={category.id}>
+                                {category.name}
+                              </option>
+                            ))}
+                          </>
+                        ) : (
+                          <div>Sélectionnez</div>
+                        )}
+                      </select>
+                    </td>
+                    <td className="border-b border-white/5 p-2 pl-5 text-[#A1A1AA] text-h2">
                       <Input
                         type="number"
                         value={editedValues.price}
@@ -316,6 +401,9 @@ export const ProductTable = () => {
                     </td>
                     <td className="border-b border-white/5 p-4 pl-5 text-[#A1A1AA] text-h2">
                       {item.quantity}
+                    </td>
+                    <td className="border-b border-white/5 p-4 pl-5 text-[#A1A1AA] text-h2">
+                      {getCategoryNameById(item.categoryId)}
                     </td>
                     <td className="border-b border-white/5 p-4 pl-5 text-[#A1A1AA] text-h2">
                       € {item.price} EUR

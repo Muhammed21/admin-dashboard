@@ -60,7 +60,8 @@ model Item {
   name      String
   price     Float
   quantity  Int
-  categories Category[]  @relation("ItemCategories") // Relation many-to-many avec Category
+  category  Category?    @relation("CategoryItems", fields: [categoryId], references: [id]) // Relation explicite
+  categoryId Int?        // Clé étrangère pointant vers la catégorie
   orders    OrderItem[]  @relation("OrderItems")
 }
 
@@ -76,5 +77,6 @@ model OrderItem {
 model Category {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  items     Item[]   @relation("ItemCategories") // Relation many-to-many avec Item
+  items     Item[]   @relation("CategoryItems") // Relation explicite pour correspondre à "CategoryItems"
 }
+

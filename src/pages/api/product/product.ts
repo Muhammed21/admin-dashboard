@@ -9,19 +9,24 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
+      // Récupérer les items avec leurs catégories associées
       const orders = await prisma.item.findMany({
         orderBy: {
           id: "asc",
         },
+        include: {
+          category: true, // Inclure les catégories dans la réponse
+        },
       });
+
       res.status(200).json(orders);
     } catch (error) {
-      console.error("Error fetching orders:", error);
-      res.status(500).json({ error: "Failed to fetch orders" });
+      console.error("Error fetching product:", error);
+      res.status(500).json({ error: "Failed to fetch product" });
     }
   } else if (req.method === "POST") {
     try {
-      const { name, price, quantity } = req.body;
+      const { name, price, quantity, categoryId } = req.body;
 
       // Validation des données
       if (!name || typeof name !== "string") {
@@ -33,6 +38,9 @@ export default async function handler(
       if (!quantity || typeof quantity !== "number" || quantity < 0) {
         return res.status(400).json({ error: "Invalid 'quantity' field" });
       }
+      if (categoryId && typeof categoryId !== "number") {
+        return res.status(400).json({ error: "Invalid 'categoryId' field" });
+      }
 
       // Création de l'élément dans la base de données
       const newItem = await prisma.item.create({
@@ -40,6 +48,7 @@ export default async function handler(
           name,
           price,
           quantity,
+          categoryId,
         },
       });
 

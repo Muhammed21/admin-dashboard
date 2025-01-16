@@ -30,9 +30,14 @@ export default async function handler(
     }
   } else if (req.method === "PUT") {
     try {
-      const { name, price, quantity } = req.body;
+      const { name, price, quantity, categoryId } = req.body;
 
-      if (!name || price === undefined || quantity === undefined) {
+      if (
+        !name ||
+        price === undefined ||
+        quantity === undefined ||
+        categoryId === undefined
+      ) {
         return res.status(400).json({ error: "Missing fields" });
       }
 
@@ -42,6 +47,7 @@ export default async function handler(
           name,
           price: parseFloat(price),
           quantity: parseInt(quantity),
+          categoryId: parseInt(categoryId), // Mise à jour de categoryId
         },
       });
 
