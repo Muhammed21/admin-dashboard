@@ -55,14 +55,23 @@ model Order {
 }
 
 model Item {
-  id        Int          @id @default(autoincrement())
-  createdAt DateTime     @default(now())
-  name      String
-  price     Float
-  quantity  Int
-  category  Category?    @relation("CategoryItems", fields: [categoryId], references: [id]) // Relation explicite
-  categoryId Int?        // Clé étrangère pointant vers la catégorie
-  orders    OrderItem[]  @relation("OrderItems")
+  id            Int          @id @default(autoincrement())
+  createdAt     DateTime     @default(now())
+  name          String
+  price         Float
+  quantity      Int
+  headerItem    Boolean      @default(false)
+  category      Category?    @relation("CategoryItems", fields: [categoryId], references: [id])
+  categoryId    Int?       
+  orders        OrderItem[]  @relation("OrderItems")
+  images        Image[]
+}
+
+model Image {
+  id            Int          @id @default(autoincrement())
+  src           String
+  itemId        Int         
+  item          Item         @relation(fields: [itemId], references: [id]) 
 }
 
 model OrderItem {

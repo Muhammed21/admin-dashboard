@@ -16,6 +16,7 @@ export default async function handler(
         },
         include: {
           category: true, // Inclure les catégories dans la réponse
+          images: true,
         },
       });
 

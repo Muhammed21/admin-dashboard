@@ -19,32 +19,6 @@ export const CustomerTable = () => {
   const [search, setSearch] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState<boolean>(true);
 
-  const addCustomer = async () => {
-    try {
-      const res = await fetch("/api/customer/customer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: "testes@example.com",
-          password: "test",
-          name: "Test",
-          adress: "test street",
-          postal: "74000",
-          city: "Annecy",
-        }),
-      });
-
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  };
-
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
@@ -156,7 +130,6 @@ export const CustomerTable = () => {
           1 — {filteredCustomers.length} résultat(s)
         </Typographie>
       </div>
-      <button onClick={addCustomer}>Add</button>
     </div>
   );
 };

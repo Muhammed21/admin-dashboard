@@ -11,6 +11,7 @@ interface Items {
   name: string;
   price: number;
   quantity: number;
+  headerItem: boolean;
   categoryId: number;
 }
 
@@ -20,6 +21,7 @@ interface APIItems {
   name: string;
   price: number;
   quantity: number;
+  headerItem: boolean;
   categoryId: number;
 }
 
@@ -59,6 +61,7 @@ export const ProductTable = () => {
           name: item.name,
           price: item.price,
           quantity: item.quantity,
+          headerItem: item.headerItem,
           categoryId: item.categoryId,
         }));
         setItems(formattedData);
@@ -145,6 +148,7 @@ export const ProductTable = () => {
           name: data.name,
           price: data.price,
           quantity: data.quantity,
+          headerItem: data.headerItem,
           categoryId: data.categoryId,
         };
         console.log(data.categoryId);
@@ -189,10 +193,38 @@ export const ProductTable = () => {
 
   return (
     <div className="flex flex-col gap-3 p-3 w-full h-max">
+      {/* HEADER PRODUCT */}
       <div className="flex flex-col gap-1 w-full h-max bg-bg-filed border border-white/5 rounded-lg py-5">
         <div className="flex flex-col pb-4 w-full">
           <Typographie balise="h1" theme="white" className="pl-5 text-[18px]">
-            Add produits
+            Produit d&apos;en tête
+          </Typographie>
+        </div>
+        <hr className="border-none bg-white/5 h-[1px]" />
+        <div className="flex pl-5 pr-8 pt-4 w-full h-max items-center justify-between">
+          <select className="input border-[1.5px] border-white/5 bg-bg-filed text-white px-4 py-[7px] rounded-md text-h2">
+            {items.length !== 0 ? (
+              <>
+                {items.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </>
+            ) : (
+              <div>Aucun element trouvé</div>
+            )}
+          </select>
+          <button className="text-[#A1A1AA] bg-white/5 hover:bg-white/10 w-max h-max transition-all ease-in-out delay-75 menuLink rounded-md py-2 px-2 text-h2">
+            Mettre dans l&apos;en tête
+          </button>
+        </div>
+      </div>
+      {/* ADD PRODUITS */}
+      <div className="flex flex-col gap-1 w-full h-max bg-bg-filed border border-white/5 rounded-lg py-5">
+        <div className="flex flex-col pb-4 w-full">
+          <Typographie balise="h1" theme="white" className="pl-5 text-[18px]">
+            Ajouter un produits
           </Typographie>
         </div>
         <hr className="border-none bg-white/5 h-[1px]" />
@@ -267,10 +299,12 @@ export const ProductTable = () => {
               "bg-white/5 hover:bg-white/10 w-max h-max transition-all ease-in-out delay-75 menuLink rounded-md py-2 px-2 text-h2"
             )}
           >
-            Add
+            Ajouter le produit
           </button>
         </div>
       </div>
+
+      {/* PRODUITS */}
       <div className="flex flex-col gap-1 w-full h-max bg-bg-filed border border-white/5 rounded-lg py-5">
         <div className="flex flex-col pb-4 w-full">
           <Typographie balise="h1" theme="white" className="pl-5 text-[18px]">
