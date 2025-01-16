@@ -49,7 +49,7 @@ model Order {
   payment      String
   fulfillment  String
   total        Float
-  items        OrderItem[]  @relation("OrderItems") // Relation avec OrderItem
+  items        OrderItem[]  @relation("OrderItems")
   customerId   Int?         
   customer     Customer?    @relation("CustomerOrders", fields: [customerId], references: [id], onDelete: Cascade)
 }
@@ -60,7 +60,8 @@ model Item {
   name      String
   price     Float
   quantity  Int
-  orders    OrderItem[]  @relation("OrderItems") // Relation avec OrderItem
+  categories Category[]  @relation("ItemCategories") // Relation many-to-many avec Category
+  orders    OrderItem[]  @relation("OrderItems")
 }
 
 model OrderItem {
@@ -70,4 +71,10 @@ model OrderItem {
   item      Item     @relation("OrderItems", fields: [itemId], references: [id], onDelete: Cascade)
   itemId    Int
   quantity  Int      // Quantité spécifique pour cet item dans cet ordre
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  items     Item[]   @relation("ItemCategories") // Relation many-to-many avec Item
 }
