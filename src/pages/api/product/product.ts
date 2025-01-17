@@ -39,7 +39,7 @@ export default async function handler(
       if (!quantity || typeof quantity !== "number" || quantity < 0) {
         return res.status(400).json({ error: "Invalid 'quantity' field" });
       }
-      if (categoryId && typeof categoryId !== "number") {
+      if (!categoryId || typeof categoryId !== "number") {
         return res.status(400).json({ error: "Invalid 'categoryId' field" });
       }
 

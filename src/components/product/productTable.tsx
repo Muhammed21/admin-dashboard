@@ -33,6 +33,9 @@ interface Category {
 export const ProductTable = () => {
   const [items, setItems] = useState<Items[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedHeaderItem, setSelectedHeaderItem] = useState<number | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm] = useState("");
   const [editingItem, setEditingItem] = useState<Items | null>(null);
@@ -65,6 +68,7 @@ export const ProductTable = () => {
           categoryId: item.categoryId,
         }));
         setItems(formattedData);
+        console.log("Fetched items:", formattedData);
       } catch (error) {
         console.error("Erreur lors de la récupération des commandes :", error);
       } finally {
@@ -89,6 +93,50 @@ export const ProductTable = () => {
 
     fetchCategories();
   }, []);
+
+  const handleSetHeaderItem = async (id: number) => {
+    console.log("Clicked 'Mettre dans l'en tête' with ID:", id); // Log de l'ID sélectionné
+
+    // Vérifie d'abord que l'élément existe dans `items`
+    const selectedItem = items.find((item) => item.id === id);
+    if (!selectedItem) {
+      console.error("Item not found in local state");
+      return;
+    }
+
+    // Mettre à jour le produit dans la base de données avec headerItem à true
+    try {
+      const response = await fetch(`/api/product/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          headerItem: true, // Marquer l'élément comme produit en tête
+          name: selectedItem.name, // Optionnel, si tu veux aussi mettre à jour ces champs
+          price: selectedItem.price,
+          quantity: selectedItem.quantity,
+          categoryId: selectedItem.categoryId, // Ces valeurs peuvent être laissées à "" ou 0 si non modifiées
+        }),
+      });
+
+      if (response.ok) {
+        // Si la mise à jour est réussie, mettre à jour l'état local
+        setItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id
+              ? { ...item, headerItem: true }
+              : { ...item, headerItem: false }
+          )
+        );
+      } else {
+        console.error("Erreur lors de la mise à jour du produit.");
+      }
+    } catch (error) {
+      console.error(
+        "Erreur réseau lors de la mise à jour de l'élément :",
+        error
+      );
+    }
+  };
 
   const handleEditClick = (item: Items) => {
     setEditingItem(item);
@@ -201,8 +249,49 @@ export const ProductTable = () => {
           </Typographie>
         </div>
         <hr className="border-none bg-white/5 h-[1px]" />
+        {items.map((item) => (
+          <>
+            {item.headerItem === true && (
+              <table className="border-collapse table-auto w-full text-sm">
+                <thead className="bg-bg-filed">
+                  <tr>
+                    <td className="border-b border-white/5 p-4 pl-5 py-3 text-[#dfdfeb] text-h2 text-left">
+                      Produit
+                    </td>
+                    <td className="border-b border-white/5 p-4 pl-5 py-3 text-[#dfdfeb] text-h2 text-left">
+                      Nom du produit
+                    </td>
+                    <td className="border-b border-white/5 pr-8 p-4 pl-5 py-3 text-[#dfdfeb] text-h2 text-right">
+                      État
+                    </td>
+                  </tr>
+                </thead>
+                <tbody className="bg-bg-filed">
+                  <tr>
+                    <td className="border-b border-white/5 p-4 pl-5 text-[#A1A1AA] text-h2">
+                      #{item.id}
+                    </td>
+                    <td className="border-b border-white/5 p-4 pl-5 text-[#A1A1AA] text-h2">
+                      {item.name}
+                    </td>
+                    <td className="border-b border-white/5 p-4 pr-8 text-[#A1A1AA] text-h2 text-right">
+                      <div className="flex gap-2 justify-end items-center">
+                        <div className="w-[9px] h-[9px] rounded-sm border border-[#379374] bg-[#10B981]"></div>
+                        Actif
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            )}
+          </>
+        ))}
         <div className="flex pl-5 pr-8 pt-4 w-full h-max items-center justify-between">
-          <select className="input border-[1.5px] border-white/5 bg-bg-filed text-white px-4 py-[7px] rounded-md text-h2">
+          <select
+            className="input border-[1.5px] border-white/5 bg-bg-filed text-white px-4 py-[7px] rounded-md text-h2"
+            value={selectedHeaderItem || ""}
+            onChange={(e) => setSelectedHeaderItem(parseInt(e.target.value))}
+          >
             {items.length !== 0 ? (
               <>
                 {items.map((item) => (
@@ -215,7 +304,10 @@ export const ProductTable = () => {
               <div>Aucun element trouvé</div>
             )}
           </select>
-          <button className="text-[#A1A1AA] bg-white/5 hover:bg-white/10 w-max h-max transition-all ease-in-out delay-75 menuLink rounded-md py-2 px-2 text-h2">
+          <button
+            onClick={() => handleSetHeaderItem(selectedHeaderItem!)}
+            className="text-[#A1A1AA] bg-white/5 hover:bg-white/10 w-max h-max transition-all ease-in-out delay-75 menuLink rounded-md py-2 px-2 text-h2"
+          >
             Mettre dans l&apos;en tête
           </button>
         </div>

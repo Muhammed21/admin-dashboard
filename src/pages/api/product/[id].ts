@@ -30,15 +30,29 @@ export default async function handler(
     }
   } else if (req.method === "PUT") {
     try {
-      const { name, price, quantity, categoryId } = req.body;
+      const { name, price, quantity, categoryId, headerItem } = req.body;
 
       if (
         !name ||
         price === undefined ||
         quantity === undefined ||
-        categoryId === undefined
+        categoryId === undefined ||
+        headerItem === undefined
       ) {
         return res.status(400).json({ error: "Missing fields" });
+      }
+
+      // Si `headerItem` est à `true`, on doit d'abord mettre à jour tous les autres produits
+      if (headerItem === true) {
+        // D'abord, mettre tous les autres `headerItem` à `false`
+        await prisma.item.updateMany({
+          where: {
+            headerItem: true,
+          },
+          data: {
+            headerItem: false,
+          },
+        });
       }
 
       const updatedProduct = await prisma.item.update({
@@ -47,7 +61,8 @@ export default async function handler(
           name,
           price: parseFloat(price),
           quantity: parseInt(quantity),
-          categoryId: parseInt(categoryId), // Mise à jour de categoryId
+          categoryId: parseInt(categoryId),
+          headerItem, // Mise à jour de categoryId
         },
       });
 
