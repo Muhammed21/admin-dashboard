@@ -17,6 +17,10 @@ export default async function handler(
     try {
       const product = await prisma.item.findUnique({
         where: { id: parseInt(id) },
+        include: {
+          category: true,
+          images: true,
+        },
       });
 
       if (!product) {
