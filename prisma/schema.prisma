@@ -64,6 +64,8 @@ model Item {
   category      Category?    @relation("CategoryItems", fields: [categoryId], references: [id])
   categoryId    Int?       
   orders        OrderItem[]  @relation("OrderItems")
+  shortDesc     String       @default("shortDesc")
+  longDesc      String       @default("longDesc")
   images        Image[]
 }
 
