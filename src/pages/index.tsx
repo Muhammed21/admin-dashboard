@@ -4,6 +4,7 @@ import { Input } from "@/components/input/input";
 import { Button } from "@/components/button/button";
 import { Avatar } from "../components/avatar/avatar";
 import { Typographie } from "@/components/typographie/typographie";
+import Checkout from "@/components/button/buyButton";
 
 export default function Login() {
   const router = useRouter();
@@ -72,6 +73,7 @@ export default function Login() {
             Continue with Email
           </Button>
         </form>
+        <Checkout name="test" amount={50} id={1} />
         {error && <div>{error}</div>}
       </div>
     </div>
