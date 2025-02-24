@@ -28,6 +28,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     event.preventDefault();
     setLoading(true);
 
+    console.log("Sending data to API:", { name, amount, id, idCustomer });
+
     try {
       const res = await fetch(SESSION_URL, {
         method: "POST",

@@ -10,6 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
+    console.log("Request body:", req.body);
     const { name, amount, id, idCustomer, customerEmail, customerName } =
       req.body;
 

@@ -21,6 +21,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
+    console.log("Request body:", req.body);
     const { idCustomer } = req.body;
 
     const buf = await buffer(req); // Convertit le flux de données en un Buffer
