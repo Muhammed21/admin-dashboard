@@ -58,6 +58,30 @@ export default async function handler(
       console.error("Error creating item:", error);
       res.status(500).json({ error: "Failed to create item" });
     }
+  } else if (req.method === "PUT") {
+    try {
+      const { id, email, password, name, adress, postal, city } = req.body;
+
+      if (!id || typeof id !== "number") {
+        return res.status(400).json({ error: "Invalid 'id' field" });
+      }
+
+      const updatedCustomer = await prisma.customer.update({
+        where: { id },
+        data: {
+          email,
+          password,
+          name,
+          adress,
+          postal,
+          city,
+        },
+      });
+      res.status(200).json(updatedCustomer);
+    } catch (error) {
+      console.error("Error updating item:", error);
+      res.status(500).json({ error: "Failed to update item" });
+    }
   } else {
     res.status(405).json({ error: "Method not allowed" });
   }
