@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^6.2.1",
+    "@prisma/client": "^6.4.1",
     "@stripe/react-stripe-js": "^3.1.1",
     "@stripe/stripe-js": "^5.6.0",
     "autoprefixer": "^10.4.20",
@@ -19,8 +19,8 @@
     "micro": "^10.0.1",
     "next": "15.0.3",
     "nodemailer": "^6.9.16",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^5.3.0",
     "stripe": "^17.6.0"
   },
@@ -35,7 +35,7 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.3",
     "postcss": "^8.4.49",
-    "prisma": "^6.2.1",
+    "prisma": "^6.4.1",
     "tailwindcss": "^3.4.15",
     "typescript": "^5"
   }
