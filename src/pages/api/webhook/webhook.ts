@@ -21,9 +21,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    console.log("Request body:", req.body);
-    const { idCustomer } = req.body;
-
     const buf = await buffer(req); // Convertit le flux de données en un Buffer
     const sig = req.headers["stripe-signature"]!;
 
@@ -45,6 +42,8 @@ export default async function handler(
     if (event.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
 
+      const idCustomer = session.metadata?.idCustomer;
+
       const customerDetails = session.customer_details;
       const customerEmail = customerDetails?.email || "";
       const customerName = customerDetails?.name || "";
@@ -58,7 +57,7 @@ export default async function handler(
           payment: "Not captured",
           fulfillment: "Not fulfilled",
           total: orderCost,
-          customerId: idCustomer,
+          customerId: idCustomer ? parseInt(idCustomer) : undefined,
         },
       });
     }

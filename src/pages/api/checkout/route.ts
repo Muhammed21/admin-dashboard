@@ -45,6 +45,7 @@ export default async function handler(
           },
         ],
         customer: customer.id, // Associe la session au client Stripe
+        metadata: { idCustomer: idCustomer },
         mode: "payment",
         allow_promotion_codes: true,
         success_url: `${req.headers.origin}/success`,
