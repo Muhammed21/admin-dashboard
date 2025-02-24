@@ -73,7 +73,7 @@ export default function Login() {
             Continue with Email
           </Button>
         </form>
-        <Checkout name="muhammed" amount={145} id={1} />
+        <Checkout name="muhammed" amount={145} id={1} idCustomer={3} />
         {error && <div>{error}</div>}
       </div>
     </div>

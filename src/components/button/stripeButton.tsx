@@ -11,7 +11,7 @@ interface CheckoutFormProps {
   name: string;
   amount: number;
   id: number;
-  idCustomer: string;
+  idCustomer: number;
 }
 
 const CheckoutForm: React.FC<CheckoutFormProps> = ({
@@ -75,7 +75,7 @@ const Checkout: React.FC<{
   name: string;
   amount: number;
   id: number;
-  idCustomer: string;
+  idCustomer: number;
 }> = ({ name, amount, id, idCustomer }) => (
   <Elements stripe={stripePromise}>
     <CheckoutForm name={name} amount={amount} id={id} idCustomer={idCustomer} />
