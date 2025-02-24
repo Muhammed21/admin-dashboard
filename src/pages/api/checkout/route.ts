@@ -10,12 +10,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { name, amount, id, customerEmail, customerName } = req.body;
+    const { name, amount, id, idCustomer, customerEmail, customerName } =
+      req.body;
 
     console.log("Received data:", {
       name,
       amount,
       id,
+      idCustomer,
       customerEmail,
       customerName,
     });

@@ -11,9 +11,15 @@ interface CheckoutFormProps {
   name: string;
   amount: number;
   id: number;
+  idCustomer: string;
 }
 
-const CheckoutForm: React.FC<CheckoutFormProps> = ({ name, amount, id }) => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({
+  name,
+  amount,
+  id,
+  idCustomer,
+}) => {
   const stripe = useStripe();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +34,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ name, amount, id }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, amount, id }),
+        body: JSON.stringify({ name, amount, id, idCustomer }),
       });
 
       if (!res.ok) {
@@ -65,13 +71,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ name, amount, id }) => {
   );
 };
 
-const Checkout: React.FC<{ name: string; amount: number; id: number }> = ({
-  name,
-  amount,
-  id,
-}) => (
+const Checkout: React.FC<{
+  name: string;
+  amount: number;
+  id: number;
+  idCustomer: string;
+}> = ({ name, amount, id, idCustomer }) => (
   <Elements stripe={stripePromise}>
-    <CheckoutForm name={name} amount={amount} id={id} />
+    <CheckoutForm name={name} amount={amount} id={id} idCustomer={idCustomer} />
   </Elements>
 );
 
