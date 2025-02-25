@@ -43,6 +43,9 @@ export default async function handler(
       const session = event.data.object as Stripe.Checkout.Session;
 
       const idCustomer = session.metadata?.idCustomer;
+      const orderId = session.metadata?.orderId;
+      const itemId = session.metadata?.itemId;
+      const quantity = session.metadata?.quantity;
 
       const customerDetails = session.customer_details;
       const customerEmail = customerDetails?.email || "";
@@ -58,6 +61,14 @@ export default async function handler(
           fulfillment: "Not fulfilled",
           total: orderCost,
           customerId: idCustomer ? parseInt(idCustomer) : undefined,
+        },
+      });
+
+      await prisma.orderItem.create({
+        data: {
+          orderId: parseInt(orderId!),
+          itemId: parseInt(itemId!),
+          quantity: parseInt(quantity!),
         },
       });
     }

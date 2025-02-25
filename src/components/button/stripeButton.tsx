@@ -11,6 +11,8 @@ interface CheckoutFormProps {
   name: string;
   amount: number;
   id: number;
+  itemId: number;
+  quantity: number;
   idCustomer: number;
 }
 
@@ -18,6 +20,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
   name,
   amount,
   id,
+  itemId,
+  quantity,
   idCustomer,
 }) => {
   const stripe = useStripe();
@@ -28,7 +32,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
     event.preventDefault();
     setLoading(true);
 
-    console.log("Sending data to API:", { name, amount, id, idCustomer });
+    console.log("Sending data to API:", {
+      name,
+      amount,
+      id,
+      idCustomer,
+      itemId,
+      quantity,
+    });
 
     try {
       const res = await fetch(SESSION_URL, {
@@ -36,7 +47,14 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, amount, id, idCustomer }),
+        body: JSON.stringify({
+          name,
+          amount,
+          id,
+          idCustomer,
+          itemId,
+          quantity,
+        }),
       });
 
       if (!res.ok) {
@@ -77,10 +95,19 @@ const Checkout: React.FC<{
   name: string;
   amount: number;
   id: number;
+  itemsId: number;
+  quantity: number;
   idCustomer: number;
-}> = ({ name, amount, id, idCustomer }) => (
+}> = ({ name, amount, id, idCustomer, itemsId, quantity }) => (
   <Elements stripe={stripePromise}>
-    <CheckoutForm name={name} amount={amount} id={id} idCustomer={idCustomer} />
+    <CheckoutForm
+      name={name}
+      amount={amount}
+      id={id}
+      idCustomer={idCustomer}
+      itemId={itemsId}
+      quantity={quantity}
+    />
   </Elements>
 );
 

@@ -11,14 +11,24 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     console.log("Request body:", req.body);
-    const { name, amount, id, idCustomer, customerEmail, customerName } =
-      req.body;
+    const {
+      name,
+      amount,
+      id,
+      idCustomer,
+      itemId,
+      quantity,
+      customerEmail,
+      customerName,
+    } = req.body;
 
     console.log("Received data:", {
       name,
       amount,
       id,
       idCustomer,
+      itemId,
+      quantity,
       customerEmail,
       customerName,
     });
@@ -45,7 +55,12 @@ export default async function handler(
           },
         ],
         customer: customer.id, // Associe la session au client Stripe
-        metadata: { idCustomer: idCustomer },
+        metadata: {
+          orderId: id,
+          idCustomer: idCustomer,
+          itemId: itemId,
+          quantity: quantity,
+        },
         mode: "payment",
         allow_promotion_codes: true,
         success_url: `${req.headers.origin}/success`,
