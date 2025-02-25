@@ -43,9 +43,7 @@ export default async function handler(
       const session = event.data.object as Stripe.Checkout.Session;
 
       const idCustomer = session.metadata?.idCustomer;
-      const orderId = session.metadata?.orderId;
-      const itemId = session.metadata?.itemId;
-      const quantity = session.metadata?.quantity;
+      const items = JSON.parse(session.metadata?.items || "[]");
 
       const customerDetails = session.customer_details;
       const customerEmail = customerDetails?.email || "";
@@ -64,13 +62,16 @@ export default async function handler(
         },
       });
 
-      await prisma.orderItem.create({
-        data: {
-          orderId: parseInt(orderId!),
-          itemId: parseInt(itemId!),
-          quantity: parseInt(quantity!),
-        },
-      });
+      // Enregistrement des items avec id
+      for (const item of items) {
+        await prisma.orderItem.create({
+          data: {
+            orderId: parseInt(item.id),
+            itemId: parseInt(item.itemId),
+            quantity: parseInt(item.quantity),
+          },
+        });
+      }
     }
     res.status(200).json({ received: true });
   } else {

@@ -11,24 +11,13 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     console.log("Request body:", req.body);
-    const {
-      name,
-      amount,
-      id,
-      idCustomer,
-      itemId,
-      quantity,
-      customerEmail,
-      customerName,
-    } = req.body;
+    const { name, id, idCustomer, items, customerEmail, customerName } =
+      req.body;
 
     console.log("Received data:", {
       name,
-      amount,
-      id,
       idCustomer,
-      itemId,
-      quantity,
+      items,
       customerEmail,
       customerName,
     });
@@ -40,31 +29,37 @@ export default async function handler(
         name: customerName,
       });
 
+      const lineItems = items.map(
+        (item: {
+          id: number;
+          itemId: number;
+          quantity: number;
+          amount: number;
+        }) => ({
+          price_data: {
+            currency: "eur",
+            product_data: {
+              name: `${name} - Item ${item.itemId}`,
+            },
+            unit_amount: item.amount * 100, // Montant en centimes
+          },
+          quantity: item.quantity,
+        })
+      );
+
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ["card", "klarna", "link", "paypal"],
-        line_items: [
-          {
-            price_data: {
-              currency: "eur",
-              product_data: {
-                name: name,
-              },
-              unit_amount: amount * 100, // Montant en centimes
-            },
-            quantity: 1,
-          },
-        ],
-        customer: customer.id, // Associe la session au client Stripe
+        line_items: lineItems,
+        customer: customer.id,
         metadata: {
           orderId: id,
           idCustomer: idCustomer,
-          itemId: itemId,
-          quantity: quantity,
+          items: JSON.stringify(items), // Items avec leurs id, itemId et quantité
         },
         mode: "payment",
         allow_promotion_codes: true,
         success_url: `${req.headers.origin}/success`,
-        cancel_url: `${req.headers.origin}`, // URL en cas d'annulation
+        cancel_url: `${req.headers.origin}`,
       });
 
       res.status(200).json({ id: session.id });

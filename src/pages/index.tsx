@@ -75,11 +75,11 @@ export default function Login() {
         </form>
         <Checkout
           name="Stripe Test"
-          amount={145}
-          id={1}
+          items={[
+            { id: 1, itemId: 10, quantity: 4, amount: 145 },
+            { id: 1, itemId: 11, quantity: 7, amount: 100 },
+          ]}
           idCustomer={3}
-          itemsId={10}
-          quantity={5}
         />
         {error && <div>{error}</div>}
       </div>
