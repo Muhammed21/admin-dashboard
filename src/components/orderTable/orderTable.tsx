@@ -310,7 +310,7 @@ export const OrderTable = () => {
                 weight="regular"
                 theme="muted-gray"
               >
-                {selectedOrder.email}
+                {selectedOrder.customerDetail.email}
               </Typographie>
             </div>
             <div className="flex p-4 items-start justify-between w-full h-max border-b border-white/5">

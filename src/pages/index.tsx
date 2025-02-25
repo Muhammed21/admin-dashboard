@@ -4,7 +4,6 @@ import { Input } from "@/components/input/input";
 import { Button } from "@/components/button/button";
 import { Avatar } from "../components/avatar/avatar";
 import { Typographie } from "@/components/typographie/typographie";
-import Checkout from "@/components/button/stripeButton";
 
 export default function Login() {
   const router = useRouter();
@@ -73,14 +72,14 @@ export default function Login() {
             Continue with Email
           </Button>
         </form>
-        <Checkout
+        {/* <Checkout
           name="Stripe Test"
           items={[
             { id: 1, itemId: 10, quantity: 4, amount: 145 },
             { id: 1, itemId: 11, quantity: 7, amount: 100 },
           ]}
           idCustomer={3}
-        />
+        /> */}
         {error && <div>{error}</div>}
       </div>
     </div>
