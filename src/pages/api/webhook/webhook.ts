@@ -44,6 +44,7 @@ export default async function handler(
 
       const idCustomer = session.metadata?.idCustomer;
       const items = JSON.parse(session.metadata?.items || "[]");
+      const idOrder = session.metadata?.orderId;
 
       const customerDetails = session.customer_details;
       const customerEmail = customerDetails?.email || "";
@@ -53,6 +54,7 @@ export default async function handler(
       // Enregistre les informations de l'acheteur dans la base de données Prisma
       await prisma.order.create({
         data: {
+          id: idOrder ? parseInt(idOrder) : undefined,
           customerName: customerName,
           email: customerEmail,
           payment: "Not captured",
