@@ -76,8 +76,8 @@ export default function Login() {
         <Checkout
           name="Stripe Test"
           items={[
-            { id: 1, quantity: 4, amount: 145 },
-            { id: 1, quantity: 7, amount: 100 },
+            { id: 4, quantity: 4, amount: 145 },
+            { id: 10, quantity: 7, amount: 100 },
           ]}
           idCustomer={3}
         />
