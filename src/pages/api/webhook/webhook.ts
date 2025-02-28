@@ -66,7 +66,7 @@ export default async function handler(
       for (const item of items) {
         await prisma.orderItem.create({
           data: {
-            orderId: order.id,
+            orderId: order.id, //Relation avec la commande
             itemId: parseInt(item.id),
             quantity: parseInt(item.quantity),
           },
