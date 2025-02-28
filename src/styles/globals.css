@@ -45,3 +45,11 @@ body {
     0px 0px 0px 1px rgba(255, 255, 255, 0.06), 0px 0px 0px 1px #27272a,
     0px 1px 2px 0px rgba(0, 0, 0, 0.32), 0px 2px 4px 0px rgba(0, 0, 0, 0.32);
 }
+
+input:focus {
+  outline: none;
+}
+
+button:focus {
+  outline: none;
+}

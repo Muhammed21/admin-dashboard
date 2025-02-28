@@ -9,8 +9,7 @@ const SESSION_URL = "/api/checkout/route";
 
 interface CheckoutFormProps {
   name: string;
-  id: number;
-  items: { id: number; itemId: number; quantity: number; amount: number }[]; // Ajout de id dans chaque item
+  items: { id: number; quantity: number; amount: number }[]; // Ajout de id dans chaque item
   idCustomer: number;
 }
 
@@ -82,12 +81,11 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
 const Checkout: React.FC<{
   name: string;
-  id: number;
-  items: { id: number; itemId: number; quantity: number; amount: number }[];
+  items: { id: number; quantity: number; amount: number }[];
   idCustomer: number;
-}> = ({ name, idCustomer, id, items }) => (
+}> = ({ name, idCustomer, items }) => (
   <Elements stripe={stripePromise}>
-    <CheckoutForm name={name} id={id} idCustomer={idCustomer} items={items} />
+    <CheckoutForm name={name} idCustomer={idCustomer} items={items} />
   </Elements>
 );
 

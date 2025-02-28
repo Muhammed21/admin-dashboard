@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-01-27.acacia",
+  apiVersion: "2025-02-24.acacia",
 });
 
 export default async function handler(
@@ -11,8 +11,7 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     console.log("Request body:", req.body);
-    const { name, id, idCustomer, items, customerEmail, customerName } =
-      req.body;
+    const { name, idCustomer, items, customerEmail, customerName } = req.body;
 
     console.log("Received data:", {
       name,
@@ -30,16 +29,11 @@ export default async function handler(
       });
 
       const lineItems = items.map(
-        (item: {
-          id: number;
-          itemId: number;
-          quantity: number;
-          amount: number;
-        }) => ({
+        (item: { id: number; quantity: number; amount: number }) => ({
           price_data: {
             currency: "eur",
             product_data: {
-              name: `${name} - Item ${item.itemId}`,
+              name: `${name}`,
             },
             unit_amount: item.amount * 100, // Montant en centimes
           },
@@ -52,7 +46,6 @@ export default async function handler(
         line_items: lineItems,
         customer: customer.id,
         metadata: {
-          orderId: id,
           idCustomer: idCustomer,
           items: JSON.stringify(items), // Items avec leurs id, itemId et quantité
         },

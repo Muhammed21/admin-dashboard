@@ -4,7 +4,7 @@ import { buffer } from "micro";
 import { PrismaClient } from "@prisma/client";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2025-01-27.acacia",
+  apiVersion: "2025-02-24.acacia",
 });
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -44,7 +44,6 @@ export default async function handler(
 
       const idCustomer = session.metadata?.idCustomer;
       const items = JSON.parse(session.metadata?.items || "[]");
-      const idOrder = session.metadata?.orderId;
 
       const customerDetails = session.customer_details;
       const customerEmail = customerDetails?.email || "";
@@ -52,9 +51,8 @@ export default async function handler(
       const orderCost = session.amount_total! / 100;
 
       // Enregistre les informations de l'acheteur dans la base de données Prisma
-      await prisma.order.create({
+      const order = await prisma.order.create({
         data: {
-          id: idOrder ? parseInt(idOrder) : undefined,
           customerName: customerName,
           email: customerEmail,
           payment: "Not captured",
@@ -69,7 +67,7 @@ export default async function handler(
         await prisma.orderItem.create({
           data: {
             orderId: parseInt(item.id),
-            itemId: parseInt(item.itemId),
+            itemId: order.id,
             quantity: parseInt(item.quantity),
           },
         });
