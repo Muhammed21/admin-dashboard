@@ -18,6 +18,7 @@ export default async function handler(
           items: {
             select: {
               item: true,
+              quantity: true,
             },
           },
         },

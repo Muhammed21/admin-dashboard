@@ -52,6 +52,7 @@ interface APIcustomer {
     city: string;
   };
   items: {
+    quantity: number;
     item: {
       id: number;
       name: string;
@@ -100,7 +101,7 @@ export const OrderTable = () => {
           id: item.item.id,
           name: item.item.name,
           price: item.item.price,
-          quantity: item.item.quantity,
+          quantity: item.quantity,
         })),
       }));
 
@@ -269,7 +270,8 @@ export const OrderTable = () => {
               weight="medium"
               className="flex gap-2"
             >
-              <TbArrowBackUp className="rotate-180" size={14} /> Order Total
+              <TbArrowBackUp className="rotate-180" size={14} /> Order Total +
+              TVA (5.00€)
             </Typographie>
             <Typographie size="h2" balise="h2" theme="gray" weight="regular">
               {selectedOrder.total}

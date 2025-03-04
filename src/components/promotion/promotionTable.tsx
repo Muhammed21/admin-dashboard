@@ -50,7 +50,13 @@ export const PromotionTable = () => {
     );
 
   return (
-    <div className="p-3 w-full">
+    <div className="flex flex-col gap-3 p-3 w-full">
+      <div className="flex w-full h-max bg-[#361900] border border-[#592a00] p-4 rounded-lg">
+        <Typographie balise="h3" className="text-[#ff9300]">
+          ⚠ Attention, les promotions ci-dessous ne sont pas valide, veuillez
+          créer des codes de promotion via votre dashboard Stripe.
+        </Typographie>
+      </div>
       <div className="flex flex-col gap-1 w-full h-max bg-bg-filed border border-white/5 rounded-lg py-5">
         <div className="flex flex-col gap-4 w-full">
           <Typographie balise="h1" theme="white" className="pl-5 text-[18px]">
