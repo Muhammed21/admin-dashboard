@@ -17,12 +17,19 @@ export default async function handler(
           customer: true,
           items: {
             select: {
-              item: true,
+              item: {
+                select: {
+                  id: true,
+                  name: true,
+                  images: true,
+                },
+              },
               quantity: true,
             },
           },
         },
       });
+
       res.status(200).json(orders);
     } catch (error) {
       console.error("Error fetching orders:", error);

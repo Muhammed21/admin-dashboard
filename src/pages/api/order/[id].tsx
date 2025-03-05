@@ -21,7 +21,14 @@ export default async function handler(
           customer: true,
           items: {
             select: {
-              item: true,
+              item: {
+                select: {
+                  id: true,
+                  name: true,
+                  images: true,
+                },
+              },
+              quantity: true,
             },
           },
         },
